@@ -1,0 +1,52 @@
+Phyton Concursos SP
+
+import requests
+from bs4 import BeautifulSoup
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+# Configurações do e-mail
+EMAIL_REMETENTE = "seuemail@gmail.com"  # Substitua pelo seu e-mail
+SENHA_EMAIL = "sua_senha_de_app"  # Use uma senha de aplicativo do Gmail
+EMAIL_DESTINATARIO = "seuemail@gmail.com"  # Pode ser o mesmo e-mail remetente
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+
+# URL do site para monitorar editais (exemplo: Diário Oficial de SP)
+URL = "https://www.imprensaoficial.com.br/"
+
+# Armazena editais já enviados para evitar notificações repetidas
+editais_enviados = set()
+
+def enviar_email(assunto, mensagem):
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_REMETENTE
+    msg["To"] = EMAIL_DESTINATARIO
+    msg["Subject"] = assunto
+    msg.attach(MIMEText(mensagem, "plain"))
+
+    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        server.starttls()
+        server.login(EMAIL_REMETENTE, SENHA_EMAIL)
+        server.sendmail(EMAIL_REMETENTE, EMAIL_DESTINATARIO, msg.as_string())
+
+def verificar_novos_editais():
+    response = requests.get(URL)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Encontrar links de editais (ajustar conforme o site)
+    links = soup.find_all("a", href=True)
+
+    for link in links:
+        url_edital = link["href"]
+        
+        if "concurso" in url_edital.lower() and url_edital not in editais_enviados:
+            assunto = "Novo Edital de Concurso Disponível"
+            mensagem = f"Um novo edital foi publicado: {url_edital}"
+            enviar_email(assunto, mensagem)
+            editais_enviados.add(url_edital)
+
+# Executa a verificação
+verificar_novos_editais()
