@@ -1,5 +1,3 @@
-Phyton Concursos SP
-
 import requests
 from bs4 import BeautifulSoup
 import smtplib
@@ -7,9 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # Configurações do e-mail
-EMAIL_REMETENTE = "seuemail@gmail.com"  # Substitua pelo seu e-mail
-SENHA_EMAIL = "sua_senha_de_app"  # Use uma senha de aplicativo do Gmail
-EMAIL_DESTINATARIO = "seuemail@gmail.com"  # Pode ser o mesmo e-mail remetente
+EMAIL_REMETENTE = "srleite15@gmail.com"  # Substitua pelo seu e-mail
+SENHA_EMAIL = "jujuba@cacau2024"  # Use uma senha de aplicativo do Gmail
+EMAIL_DESTINATARIO = "srleite15@gmail.com"  # Pode ser o mesmo e-mail remetente
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
