@@ -1,0 +1,19 @@
+name: Monitorar Editais
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # Roda o script a cada 12 horas
+  workflow_dispatch:  # Também permite rodar manualmente quando você quiser
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest  # Define o ambiente para rodar o script
+    steps:
+    - name: Checar código
+      uses: actions/checkout@v2
+    - name: Instalar dependências
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install requests beautifulsoup4 smtplib
+    - name: Rodar o script
+      run: python3 monitorar_editais.py
